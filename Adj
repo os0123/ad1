@@ -1,0 +1,579 @@
+practical no sum of two numberMainActivity 
+
+package com.example.practicalno6;
+
+import androidx.annotation.Nullable;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Intent;
+
+import android.os.Bundle;
+
+import android.view.View;
+
+import android.widget.Button;
+
+import android.widget.EditText;
+
+import android.widget.Toast;
+
+public class MainActivity extends AppCompatActivity {
+
+    EditText num1,num2;
+
+    Button btn;
+
+    @Override
+
+    protected void onCreate(Bundle savedInstanceState) {
+
+        super.onCreate(savedInstanceState);
+
+        setContentView(R.layout.activity_main);
+
+        num1=findViewById(R.id.n1);
+
+        num2=findViewById(R.id.n2);
+
+        btn=findViewById(R.id.b1);
+
+        btn.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+
+            public void onClick(View view) {
+
+                Intent intent1=new Intent(MainActivity.this,SecondActivity.class);
+
+                intent1.putExtra("first",Integer.parseInt(num1.getText().toString()));
+
+                intent1.putExtra("second",Integer.parseInt(num2.getText().toString()));
+
+                startActivityForResult(intent1,11);
+
+            }
+
+        });
+
+    }
+
+    @Override
+
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode==11){
+
+            if(resultCode==RESULT_OK){
+
+                int res=data.getIntExtra("Result",0);
+
+                Toast.makeText(this,"Result: "+res,Toast.LENGTH_LONG).show();
+
+            }
+
+        }
+
+    }
+
+}
+
+SecondActivity
+
+package com.example.practicalno6;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Intent;
+
+import android.os.Bundle;
+
+public class SecondActivity extends AppCompatActivity {
+
+    @Override
+
+    protected void onCreate(Bundle savedInstanceState) {
+
+        super.onCreate(savedInstanceState);
+
+        setContentView(R.layout.activity_second);
+
+        Intent intent2=getIntent();
+
+        int firstno=intent2.getIntExtra("first",0);
+
+        int secondno=intent2.getIntExtra("second",0);
+
+        int res=firstno+secondno;
+
+        Intent intent3=new Intent();
+
+        intent3.putExtra("Result",res);
+
+        setResult(RESULT_OK,intent3);
+
+        finish();
+
+    }
+
+}
+practical no -7 camera web dialpackage com.example.practicalno7;
+
+import androidx.annotation.Nullable;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Intent;
+
+import android.graphics.Bitmap;
+
+import android.net.Uri;
+
+import android.os.Bundle;
+
+import android.provider.MediaStore;
+
+import android.view.View;
+
+import android.widget.Button;
+
+import android.widget.ImageView;
+
+public class MainActivity extends AppCompatActivity {
+
+    Button btn1,btn2,btn3;
+
+    ImageView img;
+
+    @Override
+
+    protected void onCreate(Bundle savedInstanceState) {
+
+        super.onCreate(savedInstanceState);
+
+        setContentView(R.layout.activity_main);
+
+        btn1=findViewById(R.id.b1);
+
+        btn2=findViewById(R.id.b2);
+
+        btn3=findViewById(R.id.b3);
+
+        img=findViewById(R.id.iv);
+
+        btn1.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+
+            public void onClick(View view) {
+
+                Intent intent1=new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.google.com"));
+
+                //Implicit Intent-symbolic constant for action and Uri
+
+                startActivity(intent1);
+
+            }
+
+        });
+
+        btn2.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+
+            public void onClick(View view) {
+
+                Intent intent2=new Intent(Intent.ACTION_DIAL,Uri.parse("tel:+919326948456"));
+
+                startActivity(intent2);
+
+            }
+
+        });
+
+        btn3.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+
+            public void onClick(View view) {
+
+                Intent intent3=new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
+                //single parameter is passed for camera as it does not take any input text
+
+                startActivityForResult(intent3,11);
+
+            }
+
+        });
+
+    }
+
+    @Override
+
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+
+        super.onActivityResult(requestCode, resultCode, data);
+
+        Bitmap bmp=(Bitmap)data.getExtras().get("data");//class for handling images in java
+
+        //data.getExtras() will give the bundle and get() function to get the image
+
+        img.setImageBitmap(bmp);
+
+    }
+
+}Menu
+practical no -8package com.example.menucontrols;
+
+import androidx.annotation.NonNull;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.os.Bundle;
+
+import android.view.ContextMenu;
+
+import android.view.Menu;
+
+import android.view.MenuItem;
+
+import android.view.View;
+
+import android.widget.TextView;
+
+import android.widget.Toast;
+
+public class MainActivity extends AppCompatActivity {
+
+TextView txt;
+
+    @Override
+
+    protected void onCreate(Bundle savedInstanceState) {
+
+        super.onCreate(savedInstanceState);
+
+        setContentView(R.layout.activity_main);
+
+        txt=findViewById(R.id.t1);
+
+        registerForContextMenu(txt);
+
+    }
+
+    @Override
+
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+
+        super.onCreateContextMenu(menu, v, menuInfo);
+
+        getMenuInflater().inflate(R.menu.menu2,menu);
+
+    }
+
+    @Override
+
+    public boolean onContextItemSelected(@NonNull MenuItem item) {
+
+        switch(item.getItemId()){
+
+            case R.id.mi5:
+
+                Toast.makeText(this, "Cut option menu item selected", Toast.LENGTH_LONG).show();
+
+                return true;
+
+            case R.id.mi6:
+
+                Toast.makeText(this, "Copy option menu item selected", Toast.LENGTH_LONG).show();
+
+                return true;
+
+            case R.id.mi7:
+
+                Toast.makeText(this, "Paste option menu item selected", Toast.LENGTH_LONG).show();
+
+                return true;
+
+            default:
+
+                return super.onContextItemSelected(item);
+
+        }
+
+    }
+
+    @Override
+
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        super.onCreateOptionsMenu(menu);
+
+        getMenuInflater().inflate(R.menu.menu1,menu);
+
+        return(true);
+
+    }
+
+    @Override
+
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        switch(item.getItemId()) {
+
+            case R.id.mi1:
+
+                Toast.makeText(this, "Call option menu item selected", Toast.LENGTH_LONG).show();
+
+                return true;
+
+            case R.id.mi6:
+
+                Toast.makeText(this, "Cart option menu item selected", Toast.LENGTH_LONG).show();
+
+                return true;
+
+            case R.id.mi7:
+
+                Toast.makeText(this, "Search option menu item selected", Toast.LENGTH_LONG).show();
+
+                return true;
+
+            case R.id.mi4:
+
+                Toast.makeText(this, "Settings option menu item selected", Toast.LENGTH_LONG).show();
+
+                return true;
+
+            default:
+
+                return super.onOptionsItemSelected(item);
+
+        }
+
+    }
+
+practical  no ---9 bio data formpackage com.example.practicalno9;
+
+import androidx.annotation.RequiresApi;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.app.AlertDialog;
+
+import android.app.DatePickerDialog;
+
+import android.content.DialogInterface;
+
+import android.os.Build;
+
+import android.os.Bundle;
+
+import android.view.View;
+
+import android.widget.AdapterView;
+
+import android.widget.ArrayAdapter;
+
+import android.widget.AutoCompleteTextView;
+
+import android.widget.Button;
+
+import android.widget.DatePicker;
+
+import android.widget.EditText;
+
+import android.widget.Spinner;
+
+import android.widget.Toast;
+
+public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
+
+EditText Name,Phone,DOB;
+
+AutoCompleteTextView cntry;
+
+Spinner phntype;
+
+Button btn;
+
+String msg=" ";
+
+String phonetype=" ";
+
+    @Override
+
+    protected void onCreate(Bundle savedInstanceState) {
+
+        super.onCreate(savedInstanceState);
+
+        setContentView(R.layout.activity_main);
+
+        Name=findViewById(R.id.nameid);
+
+        Phone=findViewById(R.id.phnid);
+
+        DOB=findViewById(R.id.dateid);
+
+        cntry=findViewById(R.id.ctryid);
+
+        phntype=findViewById(R.id.phntypeid);
+
+        btn=findViewById(R.id.btnid);
+
+        //to enter string arrays in spinner and autocomplete text view
+
+        //create an adapter ,data will be put into it, set it adapter of view
+
+        //adapter object need to be created
+
+        //click of item in AutoComp need not to be taken care of but is needed for Spinner
+
+        ArrayAdapter<CharSequence> ad1=ArrayAdapter.createFromResource(this,R.array.Countries, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item);
+
+        //data is in the form of CharSequence 2nd Para-name of array which contains the suggestions(items)
+
+        //3 para-Layout in the form of int
+
+        cntry.setAdapter(ad1); //adapter is set to view
+
+        ArrayAdapter<CharSequence> ad2=ArrayAdapter.createFromResource(this,R.array.phonetype, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item);
+
+        //need to check whether spinner ad2 ob is already there
+
+        if(phntype!=null)
+
+        {
+
+           //special listener -adapter view for click of an item
+
+            phntype.setOnItemSelectedListener(this);
+
+            //this-it is implemented in the same class
+
+        }
+
+        ad2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        phntype.setAdapter(ad2);
+
+        //DOB
+
+        DOB.setOnClickListener(new View.OnClickListener() {
+
+            @RequiresApi(api = Build.VERSION_CODES.N)
+
+            @Override
+
+            public void onClick(View view) {
+
+                DatePickerDialog dp=new DatePickerDialog(MainActivity.this,0);
+
+                //onclick listener for date picker dialog
+
+                dp.setOnDateSetListener(new DatePickerDialog.OnDateSetListener() {
+
+                    @Override
+
+                    public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
+
+                        //i-year selected, i1-month selected(int-0 to 11) ,i2-year selected
+
+                        int m=i1+1;  //for user to understand the month
+
+                        DOB.setText(i2+"/"+m+"/"+i);
+
+                    }
+
+                });
+
+                dp.show(); //for date picker dialog to be visible
+
+            }
+
+        });
+
+        btn.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+
+            public void onClick(View view) {
+
+                msg="You have entered the following information \n";
+
+                msg+="Name:"+Name.getText().toString();
+
+                msg+="\n Date of Birth:"+DOB.getText().toString();
+
+                msg+="\n Phone No:"+Phone.getText().toString();
+
+                msg+="\n Phone type:"+phonetype;//string variable
+
+                msg+="\n Country "+cntry.getText().toString();
+
+                msg+="\n Please Confirm";
+
+                //alert dialog builder object is created
+
+                AlertDialog.Builder alertbuilder=new AlertDialog.Builder(MainActivity.this);
+
+                alertbuilder.setTitle("Confirmation Message");
+
+                alertbuilder.setMessage(msg);
+
+                alertbuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+
+                    @Override
+
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                        Toast.makeText(MainActivity.this,"User data Confirmed",Toast.LENGTH_LONG).show();
+
+                    }
+
+                });
+
+                alertbuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+
+                    @Override
+
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                        Toast.makeText(MainActivity.this,"User data Cancelled",Toast.LENGTH_LONG).show();
+
+                    }
+
+                });
+
+                AlertDialog ad=alertbuilder.create();
+
+                ad.show();
+
+            }
+
+        });
+
+    }
+
+    @Override
+
+    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+
+        phonetype= adapterView.getItemAtPosition(i).toString();
+
+                //i is the position of the items
+
+    }
+
+    @Override
+
+    public void onNothingSelected(AdapterView<?> adapterView) {
+
+    }
+
+}
+}
+practical no 10 
